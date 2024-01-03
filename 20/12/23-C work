@@ -25,9 +25,8 @@ int fac(int n)
 
 output 
 
-Enter num : 8
-Fibonacci series : 0 1 1 2 3 5 8 13 
-
+Enter a number: 4
+The factorial of 4 is 24
 
 ********************************************
 
