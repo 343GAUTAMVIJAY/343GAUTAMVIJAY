@@ -1,0 +1,96 @@
+Objective:
+To practice file handling operations in Python by creating, reading, and processing student data from files, and generating an analysis based on specific conditions.
+Instructions:
+•	Create a Python script that performs the following tasks.
+•	Use comments to explain each part of your code.
+•	Ensure your code is well-organized and follows best practices.
+1. Assignment Tasks:
+•	Create a File with Student Data:
+•	Write a Python function create_result_file(file_path) that creates a file named result.txt.
+•	The file should contain the following data for 30 students: name, register number, grades for five subjects, total marks, and percentage.
+•	Use the given grade points to calculate the total and percentage:
+'O' - 10 points
+'A' - 9 points
+'B' - 8 points
+'C' - 7 points
+'D' - below 6 points
+'U' - 0 points (Arrear)
+2. Read and Display File Content:
+Write a function read_result_file(file_path) that reads and prints the content of result.txt.
+3. Analyze Student Data:
+•	Write a function analyze_results(input_file, output_file) that reads data from result.txt and writes the analysis to analysis.txt.
+•	The analysis should categorize students based on their percentage into the following groups:
+I.	Students who score 90% and above
+II.	Students who score equal to or above 80% and below 90%
+III.	Students who score equal to or above 70% and below 80%
+IV.	Students who score below 70%
+V.	Students having arrear
+
+
+****************************************************
+
+import random
+
+# Define grade points
+grade_points = {'O': 10, 'A': 9, 'B': 8, 'C': 7, 'D': 5, 'U': 0}
+
+# Generate random student data
+names = ["Student_" + str(i) for i in range(1, 31)]
+students = []
+for name in names:
+    register_number = random.randint(1000, 9999)
+    grades = random.choices(list(grade_points.keys()), k=5)
+    total_marks = sum(grade_points[grade] for grade in grades)
+    percentage = (total_marks / 50) * 100  # Each subject max points = 10
+    students.append((name, register_number, grades, total_marks, percentage))
+
+# Create result.txt
+with open('result.txt', 'w') as file:
+    for student in students:
+        name, register_number, grades, total_marks, percentage = student
+        grades_str = ','.join(grades)
+        file.write(f"{name},{register_number},{grades_str},{total_marks},{percentage:.2f}\n")
+
+# Read and display the content of result.txt
+with open('result.txt', 'r') as file:
+    content = file.read()
+    print(content)
+
+# Analyze the results and write to analysis.txt
+categories = {
+    '90_and_above': [],
+    '80_to_89': [],
+    '70_to_79': [],
+    'below_70': [],
+    'arrear': []
+}
+
+for student in students:
+    name, register_number, grades, total_marks, percentage = student
+    if 'U' in grades:
+        categories['arrear'].append(student)
+    elif percentage >= 90:
+        categories['90_and_above'].append(student)
+    elif percentage >= 80:
+        categories['80_to_89'].append(student)
+    elif percentage >= 70:
+        categories['70_to_79'].append(student)
+    else:
+        categories['below_70'].append(student)
+
+with open('analysis.txt', 'w') as file:
+    for category, students in categories.items():
+        file.write(f"Category: {category.replace('_', ' ').title()}\n")
+        file.write(f"{'Name':<15}{'Register Number':<15}{'Total Marks':<15}{'Percentage':<10}\n")
+        file.write("="*55 + "\n")
+        for student in students:
+            name, register_number, grades, total_marks, percentage = student
+            file.write(f"{name:<15}{register_number:<15}{total_marks:<15}{percentage:<10.2f}\n")
+        file.write("\n")
+
+# Read and display the content of analysis.txt
+with open('analysis.txt', 'r') as file:
+    content = file.read()
+    print(content)
+
+****************************************************
