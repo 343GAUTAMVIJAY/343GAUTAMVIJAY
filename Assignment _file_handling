@@ -29,12 +29,13 @@ V.	Students having arrear
 
 ****************************************************
 
+
 import random
 
-# Define grade points
+#Define grade points
 grade_points = {'O': 10, 'A': 9, 'B': 8, 'C': 7, 'D': 5, 'U': 0}
 
-# Generate random student data
+#Generate random student data
 names = ["Student_" + str(i) for i in range(1, 31)]
 students = []
 for name in names:
@@ -44,19 +45,19 @@ for name in names:
     percentage = (total_marks / 50) * 100  # Each subject max points = 10
     students.append((name, register_number, grades, total_marks, percentage))
 
-# Create result.txt
+#Create result.txt
 with open('result.txt', 'w') as file:
     for student in students:
         name, register_number, grades, total_marks, percentage = student
         grades_str = ','.join(grades)
         file.write(f"{name},{register_number},{grades_str},{total_marks},{percentage:.2f}\n")
 
-# Read and display the content of result.txt
+#read and display the content of result.txt
 with open('result.txt', 'r') as file:
     content = file.read()
     print(content)
 
-# Analyze the results and write to analysis.txt
+#analyze the results and write to analysis.txt
 categories = {
     '90_and_above': [],
     '80_to_89': [],
@@ -88,7 +89,7 @@ with open('analysis.txt', 'w') as file:
             file.write(f"{name:<15}{register_number:<15}{total_marks:<15}{percentage:<10.2f}\n")
         file.write("\n")
 
-# Read and display the content of analysis.txt
+#Read and display the content of analysis.txt
 with open('analysis.txt', 'r') as file:
     content = file.read()
     print(content)
