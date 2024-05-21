@@ -32,18 +32,19 @@ V.	Students having arrear
 
 import random
 
-#Define grade points
 grade_points = {'O': 10, 'A': 9, 'B': 8, 'C': 7, 'D': 5, 'U': 0}
 
-#Generate random student data
+# Generate random student data with unique register numbers in ascending order
 names = ["Student_" + str(i) for i in range(1, 31)]
+register_numbers = random.sample(range(65432101, 65432131), len(names))
+register_numbers.sort()
 students = []
-for name in names:
-    register_number = random.randint(1000, 9999)
+for name, register_number in zip(names, register_numbers):
     grades = random.choices(list(grade_points.keys()), k=5)
     total_marks = sum(grade_points[grade] for grade in grades)
     percentage = (total_marks / 50) * 100  # Each subject max points = 10
     students.append((name, register_number, grades, total_marks, percentage))
+
 
 #Create result.txt
 with open('result.txt', 'w') as file:
