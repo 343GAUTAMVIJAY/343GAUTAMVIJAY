@@ -1,0 +1,99 @@
+import tkinter as tk
+from tkinter import messagebox
+
+def calculate_cgpa():
+    try:
+        total_subjects_input = subjects_entry.get()
+        if not total_subjects_input.isdigit():
+            raise ValueError("Please enter a valid number of subjects😖")
+        total_subjects = int(total_subjects_input)
+        
+        total_credits = 0
+        total_points = 0
+        
+        for i in range(total_subjects):
+            credits = int(credits_entries[i].get())
+            grade = grade_entries[i].get()
+            
+            if credits <= 0 or grade not in grade_point:
+                raise ValueError("Invalid input")
+            
+            total_credits += credits
+            total_points += credits * grade_point[grade]
+            
+        cgpa = total_points / total_credits
+        cgpa_label.config(text=f"CGPA: {cgpa:.2f}")
+        
+    except ValueError as e:
+        messagebox.showerror("Error", str(e))
+
+def clear_entries():
+    for entry in credits_entries:
+        entry.delete(0, tk.END)
+    cgpa_label.config(text="CGPA: ")
+
+def add_entries():
+    total_subjects_input = subjects_entry.get()
+    if not total_subjects_input.isdigit():
+        messagebox.showerror("Error", "Please enter a valid number of subjects")
+        return
+    total_subjects = int(total_subjects_input)
+    for i in range(total_subjects):
+        credit_entry = tk.Entry(entry_frame, width=5)
+        credit_entry.grid(row=i+1, column=0)
+        credits_entries.append(credit_entry)
+        
+        grade_var = tk.StringVar(root)
+        grade_var.set("O")  # Default grade
+        grade_entry = tk.OptionMenu(entry_frame, grade_var, *grade_point.keys())
+        grade_entry.grid(row=i+1, column=1)
+        grade_entries.append(grade_var)
+
+def update_entries():
+    for entry in credits_entries:
+        entry.destroy()
+    credits_entries.clear()
+    for entry in grade_entries:
+        entry.set("O")
+    add_entries()
+
+root = tk.Tk()
+root.title("CGPA Calculator-AIML009")
+root.configure(bg="#bf93c9")
+# Label and entry for total subjects
+subjects_label = tk.Label(root,font=("calibri",12,"bold","italic"), text="Total Subjects:",bg="#868287")
+subjects_label.grid(row=0, column=0, sticky="w")
+subjects_entry = tk.Entry(root,bg="#fad6ff")
+subjects_entry.grid(row=0, column=1)
+
+# Frame to hold credit and grade entries
+entry_frame = tk.Frame(root,bg="#fad6ff")
+entry_frame.grid(row=1, column=0, columnspan=4)
+
+# Labels for credit and grade
+credit_label = tk.Label(entry_frame,font=("calibri",12,"bold","italic"), text="Credits",bg="#868287")
+credit_label.grid(row=0, column=0)
+grade_label = tk.Label(entry_frame,font=("calibri",12,"bold","italic"), text="Grade ",bg="#868287")
+grade_label.grid(row=0, column=1)
+
+# Lists to hold entry widgets
+credits_entries = []
+grade_entries = []
+
+# Dictionary to map grade to grade point
+grade_point = {"O": 10.0, "A+": 9.0, "A": 8.0, "B+": 7.0, "B": 6.0, "C": 5.0, "F": 0.0}
+
+# Buttons
+submit_button = tk.Button(root,font=("calibri",12,"bold","underline"),text="Submit", command=update_entries,bg="#cc00ff")
+submit_button.grid(row=0, column=2)
+calculate_button = tk.Button(root,font=("calibri",12,"bold","underline"), text="Calculate CGPA", command=calculate_cgpa,bg="#cc00ff")
+calculate_button.grid(row=2, column=0)
+clear_button = tk.Button(root,font=("calibri",12,"bold","underline"), text="Clear Entries", command=clear_entries,bg="#cc00ff")
+clear_button.grid(row=3, column=2)
+
+# Label to display CGPA
+cgpa_label = tk.Label(root,font=("calibri",12,"bold","italic"), text="CGPA: ",bg="#868287")
+cgpa_label.grid(row=2, column=1)
+
+root.mainloop()
+ 
