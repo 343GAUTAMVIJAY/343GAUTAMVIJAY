@@ -7,7 +7,7 @@ with open('random.txt','w') as file:
         res=file.write(f"{random.randint(1,100)}\n")
         print(res)
 
-***********************************************************
+*****************************************************
 
 2.	Write a program to read the random numbers from the file created above and calculate their average
 
